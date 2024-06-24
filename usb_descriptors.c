@@ -24,7 +24,7 @@
  *
  */
 
-#include "bsp/rp2040/board.h"
+#include "bsp/board.h"
 #include "pico/unique_id.h"
 #include "tusb.h"
 #include "usb_descriptors.h"
