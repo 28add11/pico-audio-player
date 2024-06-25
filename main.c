@@ -97,6 +97,7 @@ void audio_control_task(void);
 /*------------- MAIN -------------*/
 int main(void)
 {
+	printf("here\n");
 
   board_init();
   tusb_init();
@@ -386,6 +387,7 @@ void audio_task(void)
   // and send it over
   // Only support speaker & headphone both have the same resolution
   // If one is 16bit another is 24bit be care of LOUD noise !
+  /*
   if (spk_data_size)
   {
     if (current_resolution == 16)
@@ -419,6 +421,7 @@ void audio_task(void)
       spk_data_size = 0;
     }
   }
+  */
 }
 
 void audio_control_task(void)

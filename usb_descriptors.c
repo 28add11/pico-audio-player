@@ -117,7 +117,7 @@ uint8_t const desc_configuration[] =
     TUD_CONFIG_DESCRIPTOR(1, ITF_NUM_TOTAL, 0, CONFIG_TOTAL_LEN, 0x00, 100),
 
     // Interface number, string index, EP Out & EP In address, EP size
-    TUD_AUDIO_HEADSET_STEREO_DESCRIPTOR(2, EPNUM_AUDIO_OUT, EPNUM_AUDIO_IN | 0x80, EPNUM_AUDIO_INT | 0x80)
+    TUD_AUDIO_HEADSET_STEREO_DESCRIPTOR(1, EPNUM_AUDIO_OUT, EPNUM_AUDIO_IN | 0x80, EPNUM_AUDIO_INT | 0x80)
 };
 
 // Invoked when received GET CONFIGURATION DESCRIPTOR
@@ -149,9 +149,8 @@ char const *string_desc_arr[] =
   (const char[]) { 0x09, 0x04 },  // 0: is supported language is English (0x0409)
   "TinyUSB",                      // 1: Manufacturer
   "TinyUSB headset",              // 2: Product
-  serial,                           // 3: Serials will use unique ID if possible
+  serial,                         // 3: Serials will use unique ID if possible
   "TinyUSB Speakers",             // 4: Audio Interface
-  "TinyUSB Microphone",           // 5: Audio Interface
 };
 
 static uint16_t _desc_str[32 + 1];
