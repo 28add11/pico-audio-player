@@ -50,7 +50,7 @@ uint32_t current_sample_rate  = 44100;
 enum
 {
   BLINK_STREAMING = 25,
-  BLINK_NOT_MOUNTED = 500,
+  BLINK_NOT_MOUNTED = 250,
   BLINK_MOUNTED = 1000,
   BLINK_SUSPENDED = 2500,
 };
@@ -97,12 +97,12 @@ void audio_control_task(void);
 /*------------- MAIN -------------*/
 int main(void)
 {
-	printf("here\n");
-
   board_init();
-  tusb_init();
 
-  printf("Headset running\n");
+  // init device stack on configured roothub port
+  tud_init(BOARD_TUD_RHPORT);
+
+  TU_LOG1("Headset running\r\n");
 
   while (1)
   {
@@ -341,7 +341,7 @@ bool tud_audio_set_itf_cb(uint8_t rhport, tusb_control_request_t const * p_reque
   uint8_t const itf = tu_u16_low(tu_le16toh(p_request->wIndex));
   uint8_t const alt = tu_u16_low(tu_le16toh(p_request->wValue));
 
-  printf("Set interface %d alt %d\n", itf, alt);
+  TU_LOG2("Set interface %d alt %d\r\n", itf, alt);
   if (ITF_NUM_AUDIO_STREAMING_SPK == itf && alt != 0)
       blink_interval_ms = BLINK_STREAMING;
 
@@ -387,7 +387,6 @@ void audio_task(void)
   // and send it over
   // Only support speaker & headphone both have the same resolution
   // If one is 16bit another is 24bit be care of LOUD noise !
-  /*
   if (spk_data_size)
   {
     if (current_resolution == 16)
@@ -421,7 +420,6 @@ void audio_task(void)
       spk_data_size = 0;
     }
   }
-  */
 }
 
 void audio_control_task(void)

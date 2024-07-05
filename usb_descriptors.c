@@ -24,8 +24,8 @@
  *
  */
 
-#include "bsp/board.h"
 #include "pico/unique_id.h"
+#include "bsp/board.h"
 #include "tusb.h"
 #include "usb_descriptors.h"
 
@@ -117,7 +117,7 @@ uint8_t const desc_configuration[] =
     TUD_CONFIG_DESCRIPTOR(1, ITF_NUM_TOTAL, 0, CONFIG_TOTAL_LEN, 0x00, 100),
 
     // Interface number, string index, EP Out & EP In address, EP size
-    TUD_AUDIO_HEADSET_STEREO_DESCRIPTOR(1, EPNUM_AUDIO_OUT, EPNUM_AUDIO_IN | 0x80, EPNUM_AUDIO_INT | 0x80)
+    TUD_AUDIO_HEADSET_STEREO_DESCRIPTOR(2, EPNUM_AUDIO_OUT, EPNUM_AUDIO_IN | 0x80, EPNUM_AUDIO_INT | 0x80)
 };
 
 // Invoked when received GET CONFIGURATION DESCRIPTOR
@@ -133,6 +133,9 @@ uint8_t const * tud_descriptor_configuration_cb(uint8_t index)
 // String Descriptors
 //--------------------------------------------------------------------+
 
+// buffer to hold flash ID
+char serial[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
+
 // String Descriptor Index
 enum {
   STRID_LANGID = 0,
@@ -141,19 +144,18 @@ enum {
   STRID_SERIAL,
 };
 
-char serial[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
-
 // array of pointer to string descriptors
 char const *string_desc_arr[] =
 {
   (const char[]) { 0x09, 0x04 },  // 0: is supported language is English (0x0409)
   "TinyUSB",                      // 1: Manufacturer
   "TinyUSB headset",              // 2: Product
-  serial,                         // 3: Serials will use unique ID if possible
+  NULL,                           // 3: Serials will use unique ID if possible
   "TinyUSB Speakers",             // 4: Audio Interface
+  "TinyUSB Microphone",           // 5: Audio Interface
 };
 
-static uint16_t _desc_str[32 + 1];
+static uint16_t _desc_str[32];
 
 // Invoked when received GET STRING DESCRIPTOR request
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete

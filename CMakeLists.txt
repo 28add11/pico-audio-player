@@ -15,6 +15,9 @@ add_executable(picoSpeaker
 	usb_descriptors.c
 )
 
+pico_enable_stdio_usb(picoSpeaker 0)
+pico_enable_stdio_uart(picoSpeaker 1)
+
 # Add pico_stdlib library which aggregates commonly used features
 target_link_libraries(picoSpeaker pico_stdlib pico_unique_id tinyusb_device tinyusb_board)
 
